@@ -33,18 +33,20 @@ func showPage(w http.ResponseWriter, request *http.Request) {
 				}
 
 				if hasMarkdownSuffix(entry.Name()) || entry.IsDir() {
+					if !strings.HasPrefix(path, "/") && path != "" {
+						path = "/" + path
+					}
 					fmt.Fprintf(w, "<li><a href=\""+path+"/"+entry.Name()+"\">"+text+"</a></li>")
 				}
-				fmt.Fprintf(w, "</ul>")
 			}
-			fmt.Fprintf(w, "</div>")
+			fmt.Fprintf(w, "</ul></div>")
 		} else if hasMarkdownSuffix(path) && fileExists(path) {
 			fmt.Fprintf(w, customMarkupHtml(getHtml(path)))
 		} else {
-			fmt.Fprintf(w, "does not exist [a]")
+			fmt.Fprintf(w, "File not found.")
 		}
 	} else {
-		fmt.Fprintf(w, "does not exist [b]")
+		fmt.Fprintf(w, "File not found.")
 	}
 	fmt.Fprintf(w, "</body></html>")
 }

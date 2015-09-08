@@ -1,5 +1,9 @@
 # Cuyuna Release Notes
 
+## 0.1.2
+
+* Fixed bug that caused invalid symlinks to be displayed in directory listings.
+
 ## 0.1.1
 
 * Fixed issue with browser list HTML.

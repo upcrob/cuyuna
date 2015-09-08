@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"os"
 )
 
 func showPage(w http.ResponseWriter, request *http.Request) {
@@ -36,7 +37,11 @@ func showPage(w http.ResponseWriter, request *http.Request) {
 					if !strings.HasPrefix(path, "/") && path != "" {
 						path = "/" + path
 					}
-					fmt.Fprintf(w, "<li><a href=\""+path+"/"+entry.Name()+"\">"+text+"</a></li>")
+
+					_, err := os.Stat(ipath+"/"+entry.Name())
+					if err == nil {
+						fmt.Fprintf(w, "<li><a href=\""+path+"/"+entry.Name()+"\">"+text+"</a></li>")
+					}
 				}
 			}
 			fmt.Fprintf(w, "</ul></div>")

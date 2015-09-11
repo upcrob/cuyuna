@@ -28,18 +28,19 @@ func customMarkupHtml(html string) string {
 	replaced = replaceCustomBlock(replaced, "NOTE")
 	replaced = replaceCustomBlock(replaced, "TIP")
 	replaced = replaceCustomBlock(replaced, "WARNING")
+	replaced = replaceCodeBlock(replaced)
 	return replaced
 }
 
 func getCss(theme string) string {
 	if theme == "simple" {
 		return `p {
-				font-family: Consolas, Palatino;
+				font-family: "Palatino Linotype", Palatino, Book Antiqua;
 				font-size: 14px;
 			}
 
 			h1, h2, h3, h4, h5, h6 {
-				font-family: Consolas, Palatino;
+				font-family: "Palatino Linotype", Palatino, Book Antiqua;
 			}
 
 			a:link {
@@ -63,27 +64,13 @@ func getCss(theme string) string {
 			}
 
 			code {
-				display: block;
-				white-space: pre-wrap;
 				font-size: 14px;
 				font-family: Courier New;
-
-				padding-left: 15px;
-				padding-right: 5px;
-				padding-top: 2px;
-				padding-bottom: 2px;
-				
-				border-left: 5px;
-				border-left-style: solid;
-				border-left-color: #00FF44;
-				
-				margin-top: 20px;
-				margin-bottom: 20px;
-				margin-left: 30px;
+				background-color:rgba(0, 0, 0, 0.05);
 			}
 
 			table {
-				font-family: Consolas, Palatino;
+				font-family: "Palatino Linotype", Palatino, Book Antiqua;
 				border-collapse: collapse;
 			}
 
@@ -107,8 +94,27 @@ func getCss(theme string) string {
 				background-color: #eef0f5;
 			}
 
+			.codeblock {
+				display: block;
+				white-space: pre-wrap;
+				background-color: transparent;
+
+				padding-left: 15px;
+				padding-right: 5px;
+				padding-top: 2px;
+				padding-bottom: 2px;
+
+				border-left: 5px;
+				border-left-style: solid;
+				border-left-color: #00FF44;
+
+				margin-top: 20px;
+				margin-bottom: 20px;
+				margin-left: 30px;
+			}
+
 			.note, .warning, .important, .tip {
-				font-family: Consolas, Palatino;
+				font-family: "Palatino Linotype", Palatino, Book Antiqua;
 				font-size: 18px;
 				font-weight: bold;
 				vertical-align: middle;
@@ -122,7 +128,7 @@ func getCss(theme string) string {
 			}
 
 			.notecontent, .warningcontent, .importantcontent, .tipcontent {
-				font-family: Consolas, Palatino;
+				font-family: "Palatino Linotype", Palatino, Book Antiqua;
 				font-size: 14px;
 				padding-left: 15px;
 				padding-right: 2px;
@@ -162,5 +168,11 @@ func replaceCustomBlock(text string, label string) string {
 	reg, _ := regexp.Compile("(<p>" + label + ":)(.*?)(</p>)")
 	replaceText := "<div class=\"customBlockTable\"><div style=\"display: table-row\"><div class=\"" + strings.ToLower(label) + "\" style=\"display: table-cell;\">" +
 		label + "</div><div class=\"" + strings.ToLower(label) + "content\" style=\"display: table-cell\">$2</div></div></div>"
+	return reg.ReplaceAllString(text, replaceText)
+}
+
+func replaceCodeBlock(text string) string {
+	reg, _ := regexp.Compile("<pre><code>")
+	replaceText := "<pre><code class=\"codeblock\">"
 	return reg.ReplaceAllString(text, replaceText)
 }

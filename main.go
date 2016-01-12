@@ -50,9 +50,9 @@ func main() {
 
 func showUsage() {
 	fmt.Println("usage: cuyuna <command>")
-	fmt.Println("  help            Prints this menu.")
-	fmt.Println("  render <file>   Renders HTML version of markdown file at the specified path.")
-	fmt.Println("  serve <root>    Starts a local HTTP server in the current working directory for viewing available markdown files.")
+	fmt.Println("  help                Prints this menu.")
+	fmt.Println("  render <src> <dst>  Renders HTML version of markdown file at the specified path.")
+	fmt.Println("  serve <root>        Starts a local HTTP server in the current working directory for viewing available markdown files.")
 }
 
 func doRender(path string, target string) {
